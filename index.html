@@ -1,0 +1,336 @@
+<!--
+ * HTimer
+ * 版本: V1.0.0
+-->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+		<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+		<script src="https://unpkg.com/vue/dist/vue.js"></script>
+		<script src="https://unpkg.com/element-ui/lib/index.js"></script>
+		<style>
+			@import url("//unpkg.com/element-ui@2.13.2/lib/theme-chalk/index.css");
+			@font-face {
+				font-family: FF;
+				src: url(https://cdn.jsdelivr.net/gh/justfont/open-huninn-font@master/font/jf-openhuninn-1.1.ttf);
+			}
+
+			#app {
+				font-family: FF, serif;
+			}
+		</style>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<title>Hsuan 網管伺服器</title>
+	</head>
+
+	<body>
+		<div id="app">
+			<el-container>
+				<el-header>Hsuan 網管伺服器</el-header>
+				<el-main>
+					<template v-for="proj in projects">
+						<el-row type="flex" justify="center">
+							<el-card class="box-card" shadow="always">
+								<div slot="header" class="clearfix">
+									<span style="float: left; padding: 5px">{{proj.name}}</span>
+									<el-button style="float: right; padding: 5px" type="success" @click="openPage(proj.link)">前往作品頁面</el-button>
+								</div>
+								<div class="text item">
+									<el-tag type="danger" v-show="proj.WIP">開發中</el-tag>&nbsp;
+									<el-tag type="danger" v-show="proj.deprecated">停止維護</el-tag>&nbsp;
+									<el-tag type="success" v-if="proj.license == 'MIT'">MIT 授權</el-tag>
+									<el-tag type="warning" v-else-if="proj.license == 'GPL-3.0'">GPLv3 授權</el-tag>
+									<el-tag type="danger" v-else-if="proj.license == 'Private'">私有軟體</el-tag>
+									<el-tag type="info" v-else >{{proj.license}}</el-tag>
+								</div>
+								<div>
+									<el-button type="info" v-if="proj.github!=''" @click="openPage(proj.github)">Github</el-button>
+								</div>
+								<br>
+								<div v-for="data in proj.others" class="text item">
+									<div style="float: left;font-size: 20px;"><el-tag style="font-size: 20px;">{{data.title}}</el-tag>&nbsp;&nbsp;{{data.content}}</div>
+									<br>
+								</div>
+							</el-card>
+						</el-row>
+						<br>
+					</template>
+				</el-main>
+
+			</el-container>
+		</div>
+	</body>
+
+	<script>
+		const baseURL = "https://yiarashi.com/user7"
+		const baseGIT = "https://github.com/hsuan1117"
+		var ServerApp = new Vue({
+			el: '#app',
+			data: {
+				projects: [{
+					name: "AirPollution 2",
+					license: "MIT",
+					link: baseURL + "/AirPollution2/AIRpollution.html",
+					github: baseGIT + "/AirPollution2",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"提供來自中央氣象局的天氣空汙資訊"
+					}]
+				},{
+					name: "CPEditor",
+					license: "無",
+					link: baseURL + "/CPEditor/index.html",
+					github: baseGIT + "/CPEditor",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"編輯器，採用CKEditor"
+					},{
+						title:"特色功能",
+						content:"使用Cookie隨時儲存你打的資料，避免資料遺失"
+					}]
+				},{
+					name: "TinyFileManager",
+					license: "採用Github上的軟體",
+					link: baseURL + "/FS/index.html",
+					github: "",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"方便管理檔案"
+					},{
+						title:"帳號",
+						content:"admin/admin@123"
+					},{
+						title:"提醒",
+						content:"非自製"
+					}]
+				},{
+					name: "Hsuan Notebook",
+					license: "GPL-3.0",
+					link: baseURL + "/HNoteBook/index.html",
+					github: baseGIT + "/HNoteBook/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"可記錄暫時性的Todo List"
+					}]
+				},{
+					name: "Hsuan 加密訊息",
+					license: "GPL-3.0",
+					link: baseURL + "/HsuanEncryptMessage/index.html",
+					github: baseGIT + "/HsuanEncryptMessage/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"利用RSA加解密訊息，確保安全性",
+					}]
+				},{
+					name: "Hsuan RSA",
+					license: "MIT",
+					link: baseURL + "/HsuanRSA/index.html",
+					github: baseGIT + "/HsuanRSA/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"RSA加解密工具"
+					}]
+				},{
+					name: "Hsuan 計時器",
+					license: "GPL-3.0",
+					link: baseURL + "/HsuanTimer/index.html",
+					github: baseGIT + "/HsuanTimer/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"線上簡易計時器",
+					}]
+				},{
+					name: "LocalJS",
+					license: "MIT",
+					link: baseURL + "/LocalJS/LocalJS-1.0.2.js",
+					github: baseGIT + "/LocalJS/",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"利用中文寫JavaScript",
+					}]
+				},{
+					name: "MUNSystem",
+					license: "Private",
+					link: baseURL + "/MUNSystem/README.md",
+					github: baseGIT + "/MUNSystem",
+					WIP:true,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"模聯社委託製作--會議系統",
+					},{
+						title:"提醒",
+						content:"極低調處理，Repo私密"
+					}]
+				},{
+					name: "PyScience",
+					license: "GPL-3.0",
+					link: baseURL + "/PyScience/core.py",
+					github: baseGIT + "/PyScience/",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"利用Python計算指紋清晰度",
+					}]
+				},{
+					name: "RunJS",
+					license: "GPL-3.0",
+					link: baseURL + "/RunJS/run.html",
+					github: baseGIT + "/RunJS/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"線上執行JavaScript",
+					}]
+				},{
+					name: "SunnyH",
+					license: "無",
+					link: baseURL + "/SunnyH/index.php",
+					github: baseGIT + "/SunnyH/",
+					WIP:true,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"Fork from TFcis/Login 重啟維護",
+					}]
+				},{
+					name: "Travel-In-Taiwan",
+					license: "GPL-3.0",
+					link: baseURL + "/Travel-In-Taiwan/index.html",
+					github: baseGIT + "/Travel-In-Taiwan/",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"台灣旅遊助手，2019Pixnet黑客松",
+					}]
+				},{
+					name: "VueTube",
+					license: "GPL-3.0",
+					link: baseURL + "/VueTube/server.php",
+					github: baseGIT + "/VueTube/",
+					WIP:true,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"線上下載Youtube音樂",
+					}]
+				},{
+					name: "profile",
+					license: "無",
+					link: baseURL + "/profile/index.html",
+					github: baseGIT + "/profile/",
+					WIP:false,
+					deprecated: false,
+					others: [{
+						title:"主要功能",
+						content:"去2020日本教育旅行時製作的個人檔案",
+					}]
+				},{
+					name: "Upload",
+					license: "無",
+					link: baseURL + "/upload.php",
+					github: "",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"PHP上傳檔案的自我練習",
+					}]
+				},{
+					name: "SearchMask",
+					license: "MIT",
+					link: baseURL + "/SearchMask/index.html",
+					github: baseGIT + "/SearchMask",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"新冠肺炎時，搜尋口罩剩餘數量的作品",
+					}]
+				},{
+					name: "ServerHome",
+					license: "MIT",
+					link: baseURL + "/ServerHome/index.html",
+					github: baseGIT + "/ServerHome",
+					WIP:false,
+					deprecated: true,
+					others: [{
+						title:"主要功能",
+						content:"目前你看到的這個",
+					}]
+				}]
+			},
+			methods: {
+				openPage(where) {
+					window.open(where)
+				}
+			},
+			computed: {
+
+			}
+		})
+	</script>
+	<style>
+		.el-header,
+		.el-footer {
+			background-color: #B3C0D1;
+			color: #333;
+			text-align: center;
+			line-height: 60px;
+		}
+
+		.el-main {
+			background-color: #E9EEF3;
+			color: #333;
+			text-align: center;
+			line-height: 20px;
+		}
+
+		.el-picker-panel .el-date-picker {
+			top: 5px !important;
+		}
+	</style>
+	<style>
+		.text {
+			font-size: 14px;
+		}
+
+		.item {
+			margin-bottom: 18px;
+		}
+
+		.clearfix:before,
+		.clearfix:after {
+			display: table;
+			content: "";
+		}
+
+		.clearfix:after {
+			clear: both
+		}
+
+		.box-card {
+			width: 480px;
+		}
+	</style>
+</html>
